@@ -14,7 +14,6 @@ limitations under the License.
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-#include <limits>
 
 using namespace std;
 
@@ -62,12 +61,15 @@ int findMin(Node *stack) {
 	return stack->next == NULL ? stack->data : min(stack->data, findMin(stack->next));
 }
 
-int enterNumber(int pos) {
-	int ret = 0;
-	int error = 0;	
-	cout << "Enter " << pos << "th number: ";
-	cin >> ret;
-	return ret;
+int enterNumber(int *where) {
+	cout << "Enter number: ";
+	
+	int result = scanf("%d", where) == 1;
+	
+	fflush(stdin);
+	fseek(stdin, 0, SEEK_END);
+
+	return result;
 }
 
 int search(Node *stack, int query, int i) {
@@ -99,17 +101,28 @@ void traverse(Node *stack) {
 }
 
 int main() {
-	Node *stack = newNode(enterNumber(0));
+	Node *stack = NULL; // newNode(enterNumber(0));
 
-	for (int i = 1; i < 11;i++) {
-		int num = enterNumber(i);
-		push(&stack, num);
+	int num = 0;
+	while (enterNumber(&num)) {
+		if (stack == NULL) {
+			stack = newNode(num);
+		} else {
+			push(&stack, num);
+		}
 	}
+
+	cout << "Your stack: " << endl;
+
+	traverse(stack);
+
+	cout << endl;
 
 	int min = findMin(stack);
 	
 	cout << "Min = " << min << endl;
 	cout << search(stack, min) - 1 << " elements before min element in stack" << endl;	
 
+	cin.get();
 	return 0;
 }
