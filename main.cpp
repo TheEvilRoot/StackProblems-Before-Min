@@ -74,6 +74,10 @@ int enterNumber(int *where) {
 
 int search(Node *stack, int query, int i) {
 
+	if (stack == NULL) {
+		return -1;
+	}
+
 	if (stack->data == query) {
 		return i + 1;
 	}
@@ -112,17 +116,18 @@ int main() {
 		}
 	}
 
-	cout << "Your stack: " << endl;
+	if (stack == NULL) {
+		cout << "Your stack is empty. Sorry" << endl;
+	} else {
+		cout << "Your stack: " << endl;
+		traverse(stack);
+		cout << endl;
 
-	traverse(stack);
-
-	cout << endl;
-
-	int min = findMin(stack);
+		int min = findMin(stack);
 	
-	cout << "Min = " << min << endl;
-	cout << search(stack, min) - 1 << " elements before min element in stack" << endl;	
-
+		cout << "Min = " << min << endl;
+		cout << search(stack, min) - 1 << " elements before min element in stack" << endl;	
+	}
 	cin.get();
 	return 0;
 }
